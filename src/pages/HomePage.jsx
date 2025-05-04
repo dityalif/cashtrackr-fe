@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import API from "@/lib/axios"; // Import axios instance
+import { motion } from "framer-motion"; // Import Framer Motion
+import API from "@/lib/axios";
 import SearchBar from "@/components/SearchBar";
 import ProductCard from "@/components/Card";
-import SkeletonCard from "@/components/SkeletonCard"; 
+import SkeletonCard from "@/components/SkeletonCard";
 import SumCard from "@/components/SumCard";
 import RecentCard from "@/components/RecentCard";
 import ExpenseDrawer from "@/components/ExpenseDrawer";
@@ -21,7 +22,7 @@ function HomePage() {
   useEffect(() => {
     const fetchSummary = async () => {
       try {
-        const response = await API.get("/summary"); // Fetch summary from backend
+        const response = await API.get("/summary");
         setSummary(response.data);
       } catch (error) {
         console.error("Error fetching summary:", error);
@@ -30,7 +31,7 @@ function HomePage() {
 
     const fetchTransactions = async () => {
       try {
-        const response = await API.get("/transactions"); // Fetch transactions from backend
+        const response = await API.get("/transactions");
         setTransactions(response.data);
       } catch (error) {
         console.error("Error fetching transactions:", error);
@@ -51,17 +52,21 @@ function HomePage() {
   };
 
   return (
-    <div className="relative flex flex-col min-h-screen w-full p-6">
+    <motion.div
+      className="relative flex flex-col min-h-screen w-full p-6"
+      initial={{ opacity: 0, y: 20 }} // Initial state
+      animate={{ opacity: 1, y: 0 }} // Animation state
+      exit={{ opacity: 0, y: 20 }} // Exit state
+      transition={{ duration: 0.5, ease: "easeInOut" }} // Animation timing
+    >
       <div className="flex items-center gap-4 mb-6">
-        {/* SearchBar */}
         <SearchBar placeholder="Explore more..." onSearch={handleSearch} />
-        {/* ExpenseDrawer */}
         <ExpenseDrawer />
       </div>
       {loading ? (
         <div className="grid grid-cols-1 gap-6 mb-6">
-          <SkeletonCard /> {/* Skeleton untuk SumCard */}
-          <SkeletonCard /> {/* Skeleton untuk RecentCard */}
+          <SkeletonCard />
+          <SkeletonCard />
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-6 mb-6">
@@ -85,16 +90,16 @@ function HomePage() {
           {products.map((product) => (
             <ProductCard
               key={product.id}
-              image={product.image_url || "/store.svg"} 
+              image={product.image_url || "/store.svg"}
               name={product.name}
               price={`Rp${product.price}`}
-              store={`Store ID: ${product.store_id}`} 
+              store={`Store ID: ${product.store_id}`}
               stock={product.stock}
             />
           ))}
         </main>
       )}
-    </div>
+    </motion.div>
   );
 }
 

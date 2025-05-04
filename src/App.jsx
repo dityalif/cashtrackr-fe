@@ -1,5 +1,6 @@
 import React, { useState, createContext } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence } from "framer-motion"; // Import AnimatePresence
 import Home from "@/pages/HomePage";
 import ExpensePage from "@/pages/ExpensePage";
 import { SidebarProvider } from "@/components/ui/sidebar";
@@ -15,7 +16,7 @@ function App() {
 
   const showAlert = (type, title, description) => {
     setAlert({ type, title, description });
-    setTimeout(() => setAlert(null), 3000); // Auto-hide after 3 seconds
+    setTimeout(() => setAlert(null), 3000);
   };
 
   return (
@@ -25,14 +26,9 @@ function App() {
           <SidebarProvider>
             <AppSidebar className="bg-background text-foreground" />
             <div className="flex-1 p-6">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/expenses" element={<ExpensePage />} />
-              </Routes>
+              <RoutesWithAnimation alert={alert} />
             </div>
           </SidebarProvider>
-
-          {/* Global Alert */}
           {alert && (
             <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50">
               <Alert
@@ -47,6 +43,19 @@ function App() {
         </div>
       </Router>
     </AlertContext.Provider>
+  );
+}
+
+function RoutesWithAnimation() {
+  const location = useLocation(); // Move useLocation here
+
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<Home />} />
+        <Route path="/expenses" element={<ExpensePage />} />
+      </Routes>
+    </AnimatePresence>
   );
 }
 
