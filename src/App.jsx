@@ -1,6 +1,6 @@
 import React, { useState, createContext } from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-import { AnimatePresence } from "framer-motion"; // Import AnimatePresence
+import { AnimatePresence } from "framer-motion"; 
 import Home from "@/pages/HomePage";
 import ExpensePage from "@/pages/ExpensePage";
 import { SidebarProvider } from "@/components/ui/sidebar";
@@ -47,7 +47,7 @@ function App() {
 }
 
 function RoutesWithAnimation() {
-  const location = useLocation(); // Move useLocation here
+  const location = useLocation();
 
   return (
     <AnimatePresence mode="wait">

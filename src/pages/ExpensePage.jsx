@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
-import { AlertContext } from "@/App"; // Import AlertContext
-import API from "@/lib/axios"; // Import axios instance
+import { motion } from "framer-motion"; 
+import { AlertContext } from "@/App"; 
+import API from "@/lib/axios"; 
 import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -26,16 +27,19 @@ import {
 
 export default function ExpensePage() {
   const [expenses, setExpenses] = useState([]);
-  const showAlert = useContext(AlertContext); // Use AlertContext
+  const [loading, setLoading] = useState(true); 
+  const showAlert = useContext(AlertContext); 
 
   useEffect(() => {
     const fetchExpenses = async () => {
       try {
-        const response = await API.get("/transactions"); // Fetch transactions from backend
+        const response = await API.get("/transactions"); 
         setExpenses(response.data);
       } catch (error) {
         console.error("Error fetching expenses:", error);
         showAlert("destructive", "Error", "Failed to fetch expenses.");
+      } finally {
+        setLoading(false); 
       }
     };
 
@@ -45,7 +49,7 @@ export default function ExpensePage() {
   const handleDelete = async (id) => {
     try {
       await API.delete(`/transactions/${id}`);
-      setExpenses((prev) => prev.filter((expense) => expense._id !== id)); // Update state
+      setExpenses((prev) => prev.filter((expense) => expense._id !== id)); 
       showAlert("default", "Success", "Expense deleted successfully!");
     } catch (error) {
       console.error("Error deleting expense:", error);
@@ -54,7 +58,13 @@ export default function ExpensePage() {
   };
 
   return (
-    <div className="p-6">
+    <motion.div
+      className="p-6"
+      initial={{ opacity: 0, y: 20 }} 
+      animate={{ opacity: 1, y: 0 }} 
+      exit={{ opacity: 0, y: 20 }} 
+      transition={{ duration: 0.5, ease: "easeInOut" }} 
+    >
       <h1 className="text-2xl font-bold mb-4">Expenses</h1>
 
       <Table className="bg-card shadow-sm">
@@ -112,6 +122,6 @@ export default function ExpensePage() {
           ))}
         </TableBody>
       </Table>
-    </div>
+    </motion.div>
   );
 }

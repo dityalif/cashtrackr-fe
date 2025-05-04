@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion"; // Import Framer Motion
+import { motion } from "framer-motion"; 
 import API from "@/lib/axios";
 import SearchBar from "@/components/SearchBar";
 import ProductCard from "@/components/Card";
@@ -54,10 +54,10 @@ function HomePage() {
   return (
     <motion.div
       className="relative flex flex-col min-h-screen w-full p-6"
-      initial={{ opacity: 0, y: 20 }} // Initial state
-      animate={{ opacity: 1, y: 0 }} // Animation state
-      exit={{ opacity: 0, y: 20 }} // Exit state
-      transition={{ duration: 0.5, ease: "easeInOut" }} // Animation timing
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }} 
+      exit={{ opacity: 0, y: 20 }} 
+      transition={{ duration: 0.5, ease: "easeInOut" }} 
     >
       <div className="flex items-center gap-4 mb-6">
         <SearchBar placeholder="Explore more..." onSearch={handleSearch} />
