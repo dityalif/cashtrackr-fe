@@ -58,18 +58,25 @@ function HomePage() {
         {/* ExpenseDrawer */}
         <ExpenseDrawer />
       </div>
-      <div className="grid grid-cols-1 gap-6 mb-6">
-        <SumCard
-          balance={summary.balance}
-          totalIncome={summary.totalIncome}
-          totalExpense={summary.totalExpense}
-          transactionCount={summary.transactionCount}
-        />
-        <RecentCard transactions={transactions} />
-      </div>
+      {loading ? (
+        <div className="grid grid-cols-1 gap-6 mb-6">
+          <SkeletonCard /> {/* Skeleton untuk SumCard */}
+          <SkeletonCard /> {/* Skeleton untuk RecentCard */}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 gap-6 mb-6">
+          <SumCard
+            balance={summary.balance}
+            totalIncome={summary.totalIncome}
+            totalExpense={summary.totalExpense}
+            transactionCount={summary.transactionCount}
+          />
+          <RecentCard transactions={transactions} />
+        </div>
+      )}
       {loading ? (
         <main className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {Array.from({ length: 8 }).map((_, index) => (
+          {Array.from({ length: 1 }).map((_, index) => (
             <SkeletonCard key={index} />
           ))}
         </main>
